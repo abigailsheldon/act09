@@ -2,13 +2,32 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'dart:async';
+import 'dart:io';
+
 class DatabaseHelper {
-  static const _databaseName = "MyDatabase.db";
+
+  DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+
+  static const _databaseName = "CardOrganizer.db";
   static const _databaseVersion = 1;
-  static const table = 'my_table';
-  static const columnId = '_id';
-  static const columnName = 'name';
-  static const columnAge = 'age';
+  
+  // Folder table
+  static const folderTable = 'folders';
+  static const columnFolderId = '_id';
+  static const columnFolderName = 'name';
+  static const columnFolderTimeStamp = 'timeStamp';
+  
+  // Card table
+  static const cardTable = 'cards';
+  static const columnCardId = '_id';
+  static const columnCardName = 'name';
+  static const columnCardSuit = 'suit';
+  static const columnCardImageUrl = 'imageUrl';
+  static const columnCardFolderId = 'folderId';
+
+
   late Database _db;
 
 // Opens the database (and creates it if it doesn't exist)
