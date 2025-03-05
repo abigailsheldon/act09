@@ -3,16 +3,22 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'dart:async';
+
+// For directory
 import 'dart:io';
 
 class DatabaseHelper {
 
+  // Private constructor to ensure only one instance created
   DatabaseHelper._privateConstructor();
+  // DatabaseHelper that can be accessed globally
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
+  // -- DB Information --
   static const _databaseName = "CardOrganizer.db";
   static const _databaseVersion = 1;
   
+  // -- Table and Column definitions --
   // Folder table
   static const folderTable = 'folders';
   static const columnFolderId = '_id';
@@ -27,30 +33,51 @@ class DatabaseHelper {
   static const columnCardImageUrl = 'imageUrl';
   static const columnCardFolderId = 'folderId';
 
+  // Private variable to hold DB instance
+  Database? _db;
 
-  late Database _db;
-
-// Opens the database (and creates it if it doesn't exist)
-  Future<void> init() async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, _databaseName);
-    _db = await openDatabase(
-      path,
-      version: _databaseVersion,
-      onCreate: _onCreate,
-    );
+  // Return DB instance and initializes if not already created
+  Future<Database> get database async {
+    if (_db != null) return _db!;
+    _db = await _initDatabase();
+    return _db!;
   }
 
-// SQL code to create the database table
+  // Initilizes DB
+  Future<Database> _initDatabase() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    // Builds path to the DB file
+    String path = join(documentsDirectory.path, _databaseName);
+    // Open DB, create if it doesn't exist
+    return await openDatabase(path,
+        version: _databaseVersion,
+        onCreate: _onCreate);
+  }
+
+  // When the DB is created for the first time
   Future _onCreate(Database db, int version) async {
+    // Create the folders table.
     await db.execute('''
-CREATE TABLE $table (
-$columnId INTEGER PRIMARY KEY,
-$columnName TEXT NOT NULL,
-$columnAge INTEGER NOT NULL
-)
-''');
-  }
+      CREATE TABLE $folderTable (
+        $columnFolderId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $columnFolderName TEXT NOT NULL,
+        $columnFolderTimeStamp DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    ''');
+
+    // Create the cards table
+    await db.execute('''
+      CREATE TABLE $cardTable (
+        $columnCardId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $columnCardName TEXT NOT NULL,
+        $columnCardSuit TEXT NOT NULL,
+        $columnCardImageUrl TEXT,
+        $columnCardFolderId INTEGER,
+        FOREIGN KEY ($columnCardFolderId) REFERENCES $folderTable ($columnFolderId)
+      )
+    ''');
+
+
 
 // Helper methods
 // Inserts a row in the database where each key in the
