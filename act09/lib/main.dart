@@ -47,6 +47,61 @@ class _FoldersScreenState extends State<FoldersScreen> {
     foldersFuture = DatabaseHelper.instance.queryAllFolders();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // App bar with a title for Folders screen
+      appBar: AppBar(
+        title: const Text('Folders'),
+      ),
+body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: foldersFuture,
+        builder: (context, snapshot) {
+          
+          // While waiting for data, loading spinner
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          // Once data available, display list of folders
+          if (snapshot.hasData) {
+            final folders = snapshot.data!;
+            return ListView.builder(
+              itemCount: folders.length,
+              itemBuilder: (context, index) {
+                final folder = folders[index];
+                
+                // Extract folder id and name from folder map
+                int folderId = folder[DatabaseHelper.columnFolderId];
+                String folderName = folder[DatabaseHelper.columnFolderName];
+
+                // Create a list tile for each folder
+                return ListTile(
+                  title: Text(folderName),
+                  trailing: const Icon(Icons.arrow_forward),
+                  
+                  // When tapped, navigate to CardsScreen for selected folder
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CardsScreen(
+                          folderId: folderId,
+                          folderName: folderName,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          }
+          // If no folders are found, display error message
+          return const Center(child: Text('No folders found.'));
+        },
+      ),
+    );
+  }
 }
 
 // Displays cards inside a folder
