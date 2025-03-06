@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
@@ -136,6 +138,51 @@ class _CardsScreenState extends State<CardsScreen> {
 
   // Method to add card to folder
   Future<void> _addCard() async {
+
+
+    Map<int, String> cardNames = {
+  1: 'Ace',
+  2: 'Two',
+  3: 'Three',
+  4: 'Four',
+  5: 'Five',
+  6: 'Six',
+  7: 'Seven',
+  8: 'Eight',
+  9: 'Nine',
+  10: 'Ten',
+  11: 'Jack',
+  12: 'Queen',
+  13: 'King',
+};
+    
+    String suit = widget.folderName;
+    String? cardUrl;
+    int cardNumber = Random().nextInt(13) + 1;
+    if(suit =='Spades'){
+      cardUrl = DatabaseHelper.spadeUrl[cardNumber];
+    }
+    else if (suit == 'Clubs'){
+      cardUrl = DatabaseHelper.clubsUrl[cardNumber];
+    }
+     else if (suit == 'Hearts'){
+      cardUrl = DatabaseHelper.heartsUrl[cardNumber];
+    }
+    else{
+      cardUrl= DatabaseHelper.diamondUrl[cardNumber];
+    }
+
+    Map<String, dynamic> row = {
+        DatabaseHelper.columnFolderId: widget.folderId,
+        DatabaseHelper.columnCardSuit: suit,
+        DatabaseHelper.columnCardImageUrl: cardUrl,
+        DatabaseHelper.columnCardName:  cardNames[cardNumber]
+
+      //DatabaseHelper.columnName: 'Bob',
+      //DatabaseHelper.columnAge: 23,
+    };
+    await DatabaseHelper.instance.insertCard(row);
+    //debugPrint('Inserted row id: $insertedId');
   
   }
 
