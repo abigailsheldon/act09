@@ -37,58 +37,72 @@ class DatabaseHelper {
   Database? _db;
 
  // Map variable that contains the url for all card images
- static const Map<String,String> cardUrl = {
-    'Ace of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/01_of_diamonds_A.svg/309px-01_of_diamonds_A.svg.png",
-    'Two of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/02_of_diamonds.svg/309px-02_of_diamonds.svg.png",
-    'Three of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/03_of_diamonds.svg/309px-03_of_diamonds.svg.png",
-    'Four of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/04_of_diamonds.svg/309px-04_of_diamonds.svg.png",
-    'Five of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/05_of_diamonds.svg/309px-05_of_diamonds.svg.png",
-    'Six of Diamonds':  "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/06_of_diamonds.svg/309px-06_of_diamonds.svg.png",
-    'Seven of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/07_of_diamonds.svg/309px-07_of_diamonds.svg.png" ,
-    'Eight of Diamonds':  "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/08_of_diamonds.svg/416px-08_of_diamonds.svg.png",
-    'Nine of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/09_of_diamonds.svg/309px-09_of_diamonds.svg.png", 
-    'Jack of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Jack_of_diamonds_fr.svg/334px-Jack_of_diamonds_fr.svg.png",
-    'Queen of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Queen_of_diamonds_fr.svg/309px-Queen_of_diamonds_fr.svg.png",
-    'King of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/King_of_diamonds_fr.svg/309px-King_of_diamonds_fr.svg.png",
-    'Ace of clubs': "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/01_of_clubs_A.svg/371px-01_of_clubs_A.svg.png",
-    'Two of clubs': "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/02_of_clubs.svg/371px-02_of_clubs.svg.png",
-    'Three of club': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/03_of_clubs.svg/371px-03_of_clubs.svg.png",
-    'Four of club': "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/04_of_clubs.svg/371px-04_of_clubs.svg.png",
-    'Five of club': "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/05_of_clubs.svg/371px-05_of_clubs.svg.png",
-    'Six of club':  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/06_of_clubs.svg/371px-06_of_clubs.svg.png",
-    'Seven of club': "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/07_of_clubs.svg/371px-07_of_clubs.svg.png" ,
-    'Eight of club':  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/08_of_clubs.svg/371px-08_of_clubs.svg.png",
-    'Nine of club': "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/09_of_clubs.svg/371px-09_of_clubs.svg.png" ,
-    'Ten of club':  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/10_of_clubs_-_David_Bellot.svg/371px-10_of_clubs_-_David_Bellot.svg.png", 
-    'Jack of club': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Queen_of_clubs_fr.svg/371px-Queen_of_clubs_fr.svg.png",
-    'Queen of club': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Queen_of_clubs_fr.svg/371px-Queen_of_clubs_fr.svg.png",
-    'King of club': "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/King_of_clubs_fr.svg/371px-King_of_clubs_fr.svg.png",
-    'Ace of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/01_of_hearts_A.svg/288px-01_of_hearts_A.svg.png",
-    'Two of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/02_of_hearts.svg/288px-02_of_hearts.svg.png",
-    'Three of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/03_of_hearts.svg/288px-03_of_hearts.svg.png",
-    'Four of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/04_of_hearts.svg/288px-04_of_hearts.svg.png",
-    'Five of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/05_of_hearts.svg/288px-05_of_hearts.svg.png",
-    'Six of hearts':  "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/06_of_hearts.svg/288px-06_of_hearts.svg.png",
-    'Seven of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/07_of_hearts.svg/288px-07_of_hearts.svg.png" ,
-    'Eight of hearts':  "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/08_of_hearts.svg/288px-08_of_hearts.svg.png",
-    'Nine of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/09_of_hearts.svg/288px-09_of_hearts.svg.png" ,
-    'Ten of hearts':  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/10_of_hearts_-_David_Bellot.svg/288px-10_of_hearts_-_David_Bellot.svg.png", 
-    'Jack of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Jack_of_hearts_fr.svg/288px-Jack_of_hearts_fr.svg.png",
-    'Queen of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Queen_of_hearts_fr.svg/288px-Queen_of_hearts_fr.svg.png",
-    'King of hearts': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/King_of_hearts_fr.svg/288px-King_of_hearts_fr.svg.png",
-    'Ace of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/01_of_spades_A.svg/371px-01_of_spades_A.svg.png",
-    'Two of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/02_of_spades.svg/371px-02_of_spades.svg.png",
-    'Three of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/03_of_spades.svg/371px-03_of_spades.svg.png",
-    'Four of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/04_of_spades.svg/371px-04_of_spades.svg.png",
-    'Five of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/05_of_spades.svg/371px-05_of_spades.svg.png",
-    'Six of spades':  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/06_of_spades.svg/371px-06_of_spades.svg.png",
-    'Seven of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/07_of_spades.svg/371px-07_of_spades.svg.png" ,
-    'Eight of spades':  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/08_of_spades.svg/371px-08_of_spades.svg.png",
-    'Nine of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/09_of_spades.svg/371px-09_of_spades.svg.png" ,
-    'Ten of spades':  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/10_of_spades_-_David_Bellot.svg/371px-10_of_spades_-_David_Bellot.svg.png", 
-    'Jack of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Jack_of_spades_fr.svg/371px-Jack_of_spades_fr.svg.png",
-    'Queen of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Queen_of_spades_fr.svg/371px-Queen_of_spades_fr.svg.png",
-    'King of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/King_of_diamonds_fr.svg/309px-King_of_diamonds_fr.svg.png",
+ //map for clubs map
+  static const Map<int,String> clubsUrl={
+    1: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/01_of_clubs_A.svg/371px-01_of_clubs_A.svg.png",
+    2: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/02_of_clubs.svg/371px-02_of_clubs.svg.png",
+    3: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/03_of_clubs.svg/371px-03_of_clubs.svg.png",
+    4: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/04_of_clubs.svg/371px-04_of_clubs.svg.png",
+    5: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/05_of_clubs.svg/371px-05_of_clubs.svg.png",
+    6:  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/06_of_clubs.svg/371px-06_of_clubs.svg.png",
+    7: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/07_of_clubs.svg/371px-07_of_clubs.svg.png" ,
+    8:  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/08_of_clubs.svg/371px-08_of_clubs.svg.png",
+    9: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/09_of_clubs.svg/371px-09_of_clubs.svg.png" ,
+    10:  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/10_of_clubs_-_David_Bellot.svg/371px-10_of_clubs_-_David_Bellot.svg.png", 
+   11: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Jack_of_clubs_fr.svg/371px-Jack_of_clubs_fr.svg.png",
+    12: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Queen_of_clubs_fr.svg/371px-Queen_of_clubs_fr.svg.png",
+    13: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/King_of_clubs_fr.svg/371px-King_of_clubs_fr.svg.png",
+
+  };
+  static const Map<int,String> heartsUrl={
+    1: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/01_of_hearts_A.svg/288px-01_of_hearts_A.svg.png",
+    2: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/02_of_hearts.svg/288px-02_of_hearts.svg.png",
+    3: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/03_of_hearts.svg/288px-03_of_hearts.svg.png",
+    4: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/04_of_hearts.svg/288px-04_of_hearts.svg.png",
+    5: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/05_of_hearts.svg/288px-05_of_hearts.svg.png",
+    6:  "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/06_of_hearts.svg/288px-06_of_hearts.svg.png",
+    7: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/07_of_hearts.svg/288px-07_of_hearts.svg.png" ,
+    8:  "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/08_of_hearts.svg/288px-08_of_hearts.svg.png",
+    9: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/09_of_hearts.svg/288px-09_of_hearts.svg.png" ,
+    10:  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/10_of_hearts_-_David_Bellot.svg/288px-10_of_hearts_-_David_Bellot.svg.png", 
+    11: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Jack_of_hearts_fr.svg/288px-Jack_of_hearts_fr.svg.png",
+    12: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Queen_of_hearts_fr.svg/288px-Queen_of_hearts_fr.svg.png",
+    13: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Jack_of_hearts_fr.svg/288px-Jack_of_hearts_fr.svg.png"
+
+  };
+  static const Map<int,String> diamondUrl= {
+
+1: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/01_of_diamonds_A.svg/309px-01_of_diamonds_A.svg.png",
+    2: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/02_of_diamonds.svg/309px-02_of_diamonds.svg.png",
+   3: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/03_of_diamonds.svg/309px-03_of_diamonds.svg.png",
+    4: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/04_of_diamonds.svg/309px-04_of_diamonds.svg.png",
+    5: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/05_of_diamonds.svg/309px-05_of_diamonds.svg.png",
+    6:  "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/06_of_diamonds.svg/309px-06_of_diamonds.svg.png",
+    7: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/07_of_diamonds.svg/309px-07_of_diamonds.svg.png" ,
+   8:  "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/08_of_diamonds.svg/416px-08_of_diamonds.svg.png",
+    9: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/09_of_diamonds.svg/309px-09_of_diamonds.svg.png", 
+    10: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/10_of_diamonds_-_David_Bellot.svg/309px-10_of_diamonds_-_David_Bellot.svg.png",
+    11: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Jack_of_diamonds_fr.svg/334px-Jack_of_diamonds_fr.svg.png",
+    12: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Queen_of_diamonds_fr.svg/309px-Queen_of_diamonds_fr.svg.png",
+    13: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/King_of_diamonds_fr.svg/309px-King_of_diamonds_fr.svg.png",
+
+
+  };
+
+ static const Map<int,String> spadeUrl = {
+    1: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/01_of_spades_A.svg/371px-01_of_spades_A.svg.png",
+    2: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/02_of_spades.svg/371px-02_of_spades.svg.png",
+    3: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/03_of_spades.svg/371px-03_of_spades.svg.png",
+    4: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/04_of_spades.svg/371px-04_of_spades.svg.png",
+    5: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/05_of_spades.svg/371px-05_of_spades.svg.png",
+    6:  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/06_of_spades.svg/371px-06_of_spades.svg.png",
+    7: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/07_of_spades.svg/371px-07_of_spades.svg.png" ,
+    8:  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/08_of_spades.svg/371px-08_of_spades.svg.png",
+    9: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/09_of_spades.svg/371px-09_of_spades.svg.png" ,
+    10:  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/10_of_spades_-_David_Bellot.svg/371px-10_of_spades_-_David_Bellot.svg.png", 
+    11: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Jack_of_spades_fr.svg/371px-Jack_of_spades_fr.svg.png",
+    12: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Queen_of_spades_fr.svg/371px-Queen_of_spades_fr.svg.png",
+    13: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/King_of_diamonds_fr.svg/309px-King_of_diamonds_fr.svg.png",
 
  };
 
@@ -160,7 +174,14 @@ class DatabaseHelper {
                         : '$i';
         
         // FILL THIS WITH URL
-        String imageUrl = '';
+        
+        String? imageUrl = (suit == 'Hearts') ? heartsUrl[i] :
+                  (suit == 'Spades') ? spadeUrl[i] :
+                  (suit == 'Diamonds') ? diamondUrl[i] :
+                  (suit == 'Clubs') ? clubsUrl[i] :
+                  ''; // Default case (optional, to handle unexpected values)
+
+
 
         // Insert card into the cards table
         await db.insert(cardTable, {
