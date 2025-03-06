@@ -20,7 +20,6 @@ class CardOrganizerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Card Organizer App',
       theme: ThemeData(
-        // Use deep purple as the primary color of the app.
         primarySwatch: Colors.deepPurple,
       ),
       // Set the initial home screen to the FoldersScreen widget.
@@ -38,12 +37,45 @@ class FoldersScreen extends StatefulWidget {
 
 class _FoldersScreenState extends State<FoldersScreen> {
 
+  // Eventually holds the list of folders from DB
+  late Future<List<Map<String, dynamic>>> foldersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    // Query all folders from DB
+    foldersFuture = DatabaseHelper.instance.queryAllFolders();
+  }
+
 }
 
+// Displays cards inside a folder
 class CardsScreen extends StatefulWidget {
+  final int folderId;
+  final String folderName;
 
+  const CardsScreen({super.key, required this.folderId, required this.folderName});
+
+  @override
+  State<CardsScreen> createState() => _CardsScreenState();
 }
 
 class _CardsScreenState extends State<CardsScreen> {
 
+  // Eventually holds list of cards
+  late Future<List<Map<String, dynamic>>> cardsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the cards for the current folder
+    _refreshCards();
+  }
+  
+  // Refreshes cards by querying the DB
+  void _refreshCards() {
+    setState(() {
+      cardsFuture = DatabaseHelper.instance.queryCardsByFolder(widget.folderId);
+    });
+  }
 }
