@@ -54,7 +54,7 @@ class _FoldersScreenState extends State<FoldersScreen> {
       appBar: AppBar(
         title: const Text('Folders'),
       ),
-body: FutureBuilder<List<Map<String, dynamic>>>(
+        body: FutureBuilder<List<Map<String, dynamic>>>(
         future: foldersFuture,
         builder: (context, snapshot) {
           
@@ -141,7 +141,10 @@ class _CardsScreenState extends State<CardsScreen> {
 
   // Method to delete card given id
   Future<void> _deleteCard(int cardId) async {
-  
+    // Call the deleteCard method from the DatabaseHelper to remove card
+    await DatabaseHelper.instance.deleteCard(cardId);
+    // Refresh the cards list to update UI
+    _refreshCards();
   }
 
   @override
