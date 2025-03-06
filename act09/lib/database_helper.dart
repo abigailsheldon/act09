@@ -170,6 +170,30 @@ class DatabaseHelper {
     }
   }
 
+  // --- Folders table CRUD ---
+
+  Future<int> insertFolder(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    return await db.insert(folderTable, row);
+  }
+
+  Future<List<Map<String, dynamic>>> queryAllFolders() async {
+    Database db = await instance.database;
+    return await db.query(folderTable);
+  }
+
+  Future<int> updateFolder(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    int id = row[columnFolderId];
+    return await db.update(folderTable, row,
+        where: '$columnFolderId = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteFolder(int id) async {
+    Database db = await instance.database;
+    return await db.delete(folderTable,
+        where: '$columnFolderId = ?', whereArgs: [id]);
+  }
 
   // -- Cards table CRUD --
   // Inserts new card into cards table
