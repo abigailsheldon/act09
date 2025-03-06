@@ -43,27 +43,91 @@ class _FoldersScreenState extends State<FoldersScreen> {
   @override
   void initState() {
     super.initState();
-    // Query all folders from DB
-    foldersFuture = DatabaseHelper.instance.queryAllFolders();
+    // Initialize folders list
+    _refreshFolders();
+  }
+
+  // Refreshes the folder list by querying the DB
+  void _refreshFolders() {
+    setState(() {
+      foldersFuture = DatabaseHelper.instance.queryAllFolders();
+    });
+  }
+
+  // Add folder with provided folder name
+  Future<void> _addFolder(String folderName) async {
+    // Insert a new folder into DB
+    await DatabaseHelper.instance.insertFolder({ DatabaseHelper.columnFolderName: folderName });
+    // Refresh the folder list
+    _refreshFolders();
+  }
+
+  // Delete folder given id
+  Future<void> _deleteFolder(int folderId) async {
+    await DatabaseHelper.instance.deleteFolder(folderId);
+    _refreshFolders();
+  }
+
+  // Displays dialog to let the user input folder name
+  void _showAddFolderDialog() {
+    // Create a controller for the text field
+    TextEditingController folderController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Add Folder"),
+          content: TextField(
+            controller: folderController,
+            decoration: const InputDecoration(hintText: "Folder Name"),
+          ),
+          actions: [
+            // Cancel button to dismiss the dialog.
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            // Add button to confirm adding the new folder.
+            TextButton(
+              child: const Text("Add"),
+              onPressed: () async {
+                String folderName = folderController.text.trim();
+                if (folderName.isNotEmpty) {
+                  await _addFolder(folderName);
+                  Navigator.pop(context); // Close the dialog.
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // App bar with a title for Folders screen
       appBar: AppBar(
         title: const Text('Folders'),
+        actions: [
+          // Icon button to trigger add folder dialog
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: _showAddFolderDialog,
+          ),
+        ],
       ),
-body: FutureBuilder<List<Map<String, dynamic>>>(
+
+        body: FutureBuilder<List<Map<String, dynamic>>>(
         future: foldersFuture,
         builder: (context, snapshot) {
-          
-          // While waiting for data, loading spinner
+          // Show loading spinner while waiting for data
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          
-          // Once data available, display list of folders
+          // Display the list of folders
           if (snapshot.hasData) {
             final folders = snapshot.data!;
             return ListView.builder(
@@ -71,32 +135,44 @@ body: FutureBuilder<List<Map<String, dynamic>>>(
               itemBuilder: (context, index) {
                 final folder = folders[index];
                 
-                // Extract folder id and name from folder map
+                // Extract the folder id and name from map
                 int folderId = folder[DatabaseHelper.columnFolderId];
                 String folderName = folder[DatabaseHelper.columnFolderName];
-
-                // Create a list tile for each folder
-                return ListTile(
-                  title: Text(folderName),
-                  trailing: const Icon(Icons.arrow_forward),
+                
+                return Dismissible(
+                  key: Key(folderId.toString()),
+                  background: Container(color: Colors.red),
                   
-                  // When tapped, navigate to CardsScreen for selected folder
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CardsScreen(
-                          folderId: folderId,
-                          folderName: folderName,
-                        ),
-                      ),
+                  // When the folder is swiped away, delete it
+                  onDismissed: (direction) async {
+                    await _deleteFolder(folderId);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Folder '$folderName' deleted"))
                     );
                   },
+                  
+                  child: ListTile(
+                    title: Text(folderName),
+                    trailing: const Icon(Icons.arrow_forward),
+                    
+                    // Navigate to the CardsScreen when a folder is tapped
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CardsScreen(
+                            folderId: folderId,
+                            folderName: folderName,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             );
           }
-          // If no folders are found, display error message
+          // If no folders are found, display message
           return const Center(child: Text('No folders found.'));
         },
       ),
@@ -141,7 +217,10 @@ class _CardsScreenState extends State<CardsScreen> {
 
   // Method to delete card given id
   Future<void> _deleteCard(int cardId) async {
-  
+    // Call the deleteCard method from the DatabaseHelper to remove card
+    await DatabaseHelper.instance.deleteCard(cardId);
+    // Refresh the cards list to update UI
+    _refreshCards();
   }
 
   @override
