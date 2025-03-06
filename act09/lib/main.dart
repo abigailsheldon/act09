@@ -134,17 +134,93 @@ class _CardsScreenState extends State<CardsScreen> {
     });
   }
 
+  // Method to add card to folder
   Future<void> _addCard() async {
   
   }
 
+  // Method to delete card given id
   Future<void> _deleteCard(int cardId) async {
   
   }
 
   @override
   Widget build(BuildContext context) {
-  
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.folderName),
+      ),
+      
+      // FutureBuilder waits for cards data
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: cardsFuture,
+        builder: (context, snapshot) {
+          
+          // While waiting, show a loading spinner
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          // Once data available, display cards in a grid
+          if (snapshot.hasData) {
+            final cards = snapshot.data!;
+            return GridView.builder(
+              padding: const EdgeInsets.all(8),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                // 3 columns
+                crossAxisCount: 3,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: cards.length,
+              itemBuilder: (context, index) {
+                final card = cards[index];
+                return GestureDetector(
+                  
+                  // On long press, delete card
+                  onLongPress: () async {
+                    await _deleteCard(card[DatabaseHelper.columnCardId]);
+                  },
+                  
+                  child: Card(
+                    elevation: 4,
+                    child: Column(
+                      children: [
+                        
+                        // Display card image using Image.network.
+                        Expanded(
+                          child: Image.network(
+                            card[DatabaseHelper.columnCardImageUrl],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        
+                        // Display the card's name below the image.
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            card[DatabaseHelper.columnCardName],
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+          // If no cards in folder, display error message
+          return const Center(child: Text('No cards in this folder.'));
+        },
+      ),
+      
+      // Floating action button to add a new card
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addCard,
+        child: const Icon(Icons.add),
+      ),
+    );
   }
-
 }
