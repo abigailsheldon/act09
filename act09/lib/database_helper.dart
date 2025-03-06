@@ -8,7 +8,7 @@ import 'dart:async';
 import 'dart:io';
 
 class DatabaseHelper {
-
+ 
   // Private constructor to ensure only one instance created
   DatabaseHelper._privateConstructor();
   // DatabaseHelper that can be accessed globally
@@ -35,7 +35,24 @@ class DatabaseHelper {
 
   // Private variable to hold DB instance
   Database? _db;
+ // Map variable that contains the url for all card images
+ static const Map<String,String> cardUrl = {
+    'Ace of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/01_of_diamonds_A.svg/309px-01_of_diamonds_A.svg.png",
+    'Two of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/02_of_diamonds.svg/309px-02_of_diamonds.svg.png",
+    'Three of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/03_of_diamonds.svg/309px-03_of_diamonds.svg.png",
+    'Four of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/04_of_diamonds.svg/309px-04_of_diamonds.svg.png",
+    'Five of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/05_of_diamonds.svg/309px-05_of_diamonds.svg.png",
+    'Six of Diamonds':  "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/06_of_diamonds.svg/309px-06_of_diamonds.svg.png",
+    'Seven of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/07_of_diamonds.svg/309px-07_of_diamonds.svg.png" ,
+    'Eight of Diamonds':  "https://en.wikipedia.org/wiki/File:08_of_diamonds.svg",
+    'Nine of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/09_of_diamonds.svg/309px-09_of_diamonds.svg.png" ,
+    'Ten of Diamonds':  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/10_of_diamonds_-_David_Bellot.svg/309px-10_of_diamonds_-_David_Bellot.svg.png", 
+    'Jack of Diamonds': "https://en.wikipedia.org/wiki/File:Jack_of_diamonds_fr.svg",
+    'Queen of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Queen_of_diamonds_fr.svg/309px-Queen_of_diamonds_fr.svg.png",
+    'King of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/King_of_diamonds_fr.svg/309px-King_of_diamonds_fr.svg.png",
 
+
+ };
   // Return DB instance and initializes if not already created
   Future<Database> get database async {
     if (_db != null) return _db!;
