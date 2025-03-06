@@ -8,7 +8,7 @@ import 'dart:async';
 import 'dart:io';
 
 class DatabaseHelper {
- 
+
   // Private constructor to ensure only one instance created
   DatabaseHelper._privateConstructor();
   // DatabaseHelper that can be accessed globally
@@ -35,6 +35,7 @@ class DatabaseHelper {
 
   // Private variable to hold DB instance
   Database? _db;
+
  // Map variable that contains the url for all card images
  static const Map<String,String> cardUrl = {
     'Ace of Diamonds': "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/01_of_diamonds_A.svg/309px-01_of_diamonds_A.svg.png",
@@ -89,8 +90,8 @@ class DatabaseHelper {
     'Queen of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Queen_of_spades_fr.svg/371px-Queen_of_spades_fr.svg.png",
     'King of spades': "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/King_of_diamonds_fr.svg/309px-King_of_diamonds_fr.svg.png",
 
-
  };
+
   // Return DB instance and initializes if not already created
   Future<Database> get database async {
     if (_db != null) return _db!;
@@ -119,7 +120,9 @@ class DatabaseHelper {
         $columnFolderTimeStamp DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     ''');
+
     //db.insert(folderTable, values)
+
 
 
     // Create cards table
