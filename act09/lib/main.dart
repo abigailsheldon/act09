@@ -78,4 +78,18 @@ class _CardsScreenState extends State<CardsScreen> {
       cardsFuture = DatabaseHelper.instance.queryCardsByFolder(widget.folderId);
     });
   }
+
+  Future<void> _addCard() async {
+  
+  }
+
+  Future<void> _deleteCard(int cardId) async {
+  
+  }
+
+  @override
+  Widget build(BuildContext context) {
+  
+  }
+
 }
