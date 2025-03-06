@@ -180,7 +180,6 @@ class _FoldersScreenState extends State<FoldersScreen> {
   }
 }
 
-
 // Displays cards inside a folder
 class CardsScreen extends StatefulWidget {
   final int folderId;
