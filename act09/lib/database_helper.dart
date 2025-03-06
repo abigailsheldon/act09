@@ -188,7 +188,7 @@ class DatabaseHelper {
           columnCardName: '$cardName of $suit',
           columnCardSuit: suit,
           columnCardImageUrl: imageUrl,
-          columnCardFolderId: null,
+          
         });
       }
     }
@@ -198,6 +198,7 @@ class DatabaseHelper {
 
   Future<int> insertFolder(Map<String, dynamic> row) async {
     Database db = await instance.database;
+    row.remove(columnCardId);
     return await db.insert(folderTable, row);
   }
 
@@ -218,12 +219,25 @@ class DatabaseHelper {
     return await db.delete(folderTable,
         where: '$columnFolderId = ?', whereArgs: [id]);
   }
+  
+
 
   // -- Cards table CRUD --
   // Inserts new card into cards table
   Future<int> insertCard(Map<String, dynamic> row) async {
     Database db = await instance.database;
+    var result = await db.query(
+    cardTable,
+    where: '$columnCardName = ? AND $columnCardSuit = ?',
+    whereArgs: [row[columnCardName], row[columnCardSuit]],
+  );
+
+  if (result.isEmpty) {
     return await db.insert(cardTable, row);
+  } else {
+    return -1; // Indicating duplicate found
+  }
+    //return await db.insert(cardTable, row);
   }
 
   // Retrieves all cards that belong to folder
